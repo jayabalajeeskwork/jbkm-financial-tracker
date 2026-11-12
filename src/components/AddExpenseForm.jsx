@@ -4,7 +4,7 @@ import {
   getFirstDateOfMonth,
   getMaximumSelectableDateForMonth,
 } from "../utils/monthUtilities";
-import "./AddExpenseForm.css";
+import "../styles/AddExpenseForm.css";
 
 export default function AddExpenseForm({
   selectedMonthKey,
