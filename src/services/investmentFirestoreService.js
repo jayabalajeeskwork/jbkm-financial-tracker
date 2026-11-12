@@ -57,18 +57,28 @@ export const subscribeToInvestmentValuations = ({
 };
 
 // Add a purchase
-export const addInvestmentEntry = async ({
-  userId,
-  investmentType,
-  quantity,
-  unit,
-  purchaseAmount,
-  purchaseDate,
-}) => {
+export const addInvestmentEntry = async (investmentData) => {
+  const {
+    userId,
+    investmentName,
+    purchaseAmount,
+    purchaseDate,
+  } = investmentData || {};
+
+  if (!userId) {
+    throw new Error("User ID is missing.");
+  }
+
+  if (typeof investmentName !== "string" || !investmentName.trim()) {
+    throw new Error("Investment name is missing or invalid.");
+  }
+
+  if (purchaseAmount === "" || Number(purchaseAmount) <= 0) {
+    throw new Error("Enter a valid purchase amount.");
+  }
+
   await addDoc(buildInvestmentEntriesCollection(userId), {
-    investmentType: investmentType.trim(),
-    quantity: Number(quantity),
-    unit,
+    investmentName: investmentName.trim(),
     purchaseAmount: Number(purchaseAmount),
     purchaseDate,
     createdAt: serverTimestamp(),
@@ -92,15 +102,33 @@ export const deleteInvestmentEntry = async ({
 };
 
 // Save a new valuation. Each update is preserved as history.
-export const addInvestmentValuation = async ({
-  userId,
-  investmentType,
-  currentValue,
-  valuationDate,
-}) => {
+export const addInvestmentValuation = async (valuationData) => {
+  const {
+    userId,
+    investmentName,
+    currentValuePerEntry,
+    valuationDate,
+  } = valuationData || {};
+
+  if (!userId) {
+    throw new Error("User ID is missing.");
+  }
+
+  if (typeof investmentName !== "string" || !investmentName.trim()) {
+    throw new Error("Investment name is missing or invalid.");
+  }
+
+  if (
+    currentValuePerEntry === "" ||
+    currentValuePerEntry === undefined ||
+    Number(currentValuePerEntry) <= 0
+  ) {
+    throw new Error("Enter a valid current value.");
+  }
+
   await addDoc(buildInvestmentValuationsCollection(userId), {
-    investmentType: investmentType.trim(),
-    currentValue: Number(currentValue),
+    investmentName: investmentName.trim(),
+    currentValuePerEntry: Number(currentValuePerEntry),
     valuationDate,
     createdAt: serverTimestamp(),
   });

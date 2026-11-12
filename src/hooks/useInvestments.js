@@ -16,7 +16,10 @@ export function useInvestments(userId) {
   const [investmentErrorMessage, setInvestmentErrorMessage] = useState("");
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId) {
+      setIsLoadingInvestments(false);
+      return;
+    }
 
     setIsLoadingInvestments(true);
     setInvestmentErrorMessage("");
@@ -24,16 +27,18 @@ export function useInvestments(userId) {
     let entriesLoaded = false;
     let valuationsLoaded = false;
 
-    const handleLoadingError = (error) => {
-      console.error("Investment loading error:", error);
-      setInvestmentErrorMessage(error.message || "Unable to load investments.");
-      setIsLoadingInvestments(false);
-    };
-
     const checkLoadingComplete = () => {
       if (entriesLoaded && valuationsLoaded) {
         setIsLoadingInvestments(false);
       }
+    };
+
+    const handleError = (error) => {
+      console.error("Investment loading error:", error);
+      setInvestmentErrorMessage(
+        error.message || "Unable to load investments."
+      );
+      setIsLoadingInvestments(false);
     };
 
     const unsubscribeEntries = subscribeToInvestmentEntries({
@@ -43,7 +48,7 @@ export function useInvestments(userId) {
         entriesLoaded = true;
         checkLoadingComplete();
       },
-      onError: handleLoadingError,
+      onError: handleError,
     });
 
     const unsubscribeValuations = subscribeToInvestmentValuations({
@@ -53,7 +58,7 @@ export function useInvestments(userId) {
         valuationsLoaded = true;
         checkLoadingComplete();
       },
-      onError: handleLoadingError,
+      onError: handleError,
     });
 
     return () => {
@@ -62,45 +67,33 @@ export function useInvestments(userId) {
     };
   }, [userId]);
 
-  const addEntry = async (investmentData) => {
-    try {
-      setInvestmentErrorMessage("");
+ const addEntry = async (investmentData) => {
+  console.log("Investment data received in hook:", investmentData);
 
-      await addInvestmentEntryToFirestore({
-        userId,
-        ...investmentData,
-      });
-    } catch (error) {
-      setInvestmentErrorMessage(error.message || "Unable to add investment.");
-      throw error;
-    }
-  };
+  if (!investmentData?.investmentName) {
+    throw new Error("Investment name is missing.");
+  }
+
+  await addInvestmentEntryToFirestore({
+    userId,
+    investmentName: investmentData.investmentName,
+    purchaseAmount: investmentData.purchaseAmount,
+    purchaseDate: investmentData.purchaseDate,
+  });
+};
 
   const deleteEntry = async (investmentEntryId) => {
-    try {
-      setInvestmentErrorMessage("");
-
-      await deleteInvestmentEntryFromFirestore({
-        userId,
-        investmentEntryId,
-      });
-    } catch (error) {
-      setInvestmentErrorMessage(error.message || "Unable to delete investment.");
-    }
+    await deleteInvestmentEntryFromFirestore({
+      userId,
+      investmentEntryId,
+    });
   };
 
   const saveValuation = async (valuationData) => {
-    try {
-      setInvestmentErrorMessage("");
-
-      await addInvestmentValuationToFirestore({
-        userId,
-        ...valuationData,
-      });
-    } catch (error) {
-      setInvestmentErrorMessage(error.message || "Unable to save valuation.");
-      throw error;
-    }
+    await addInvestmentValuationToFirestore({
+      userId,
+      ...valuationData,
+    });
   };
 
   return {
