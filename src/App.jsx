@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { firebaseAuthentication } from "./services/firebaseConfiguration";
 import { staticUserProfilesByEmail } from "./data/staticUsers";
 import LoginPage from "./components/LoginPage";
-import MonthlyExpensePage from "./components/MonthlyExpensePage";
+import AppLayout from "./components/AppLayout";
+import DashboardPage from "./pages/DashboardPage";
+import ExpensePage from "./pages/ExpensePage";
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -39,8 +42,18 @@ export default function App() {
 
   const handleLogout = () => signOut(firebaseAuthentication);
 
-  if (isCheckingLoginStatus) return <p style={{ textAlign: "center" }}>Loading...</p>;
+  if (isCheckingLoginStatus) return <p className="loading-message">Loading...</p>;
   if (!loggedInUser) return <LoginPage />;
 
-  return <MonthlyExpensePage loggedInUser={loggedInUser} onLogout={handleLogout} />;
+  return (
+    <Routes>
+      <Route
+        element={<AppLayout loggedInUser={loggedInUser} onLogout={handleLogout} />}
+      >
+        <Route path="/" element={<DashboardPage loggedInUser={loggedInUser} />} />
+        <Route path="/expenses" element={<ExpensePage loggedInUser={loggedInUser} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
+  );
 }

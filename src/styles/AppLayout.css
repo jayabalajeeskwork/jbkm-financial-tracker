@@ -1,0 +1,48 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-layout__main {
+  max-width: 720px;
+  margin: 0 auto;
+  /* extra bottom space so content is never hidden behind the fixed nav bar */
+  padding: 16px 14px calc(var(--bottom-navigation-height) + 28px + env(safe-area-inset-bottom));
+}
+
+.app-layout__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.app-layout__greeting {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+@media (min-width: 640px) {
+  .app-layout__main {
+    padding-top: 28px;
+  }
+
+  .app-layout__header {
+    margin-bottom: 18px;
+  }
+
+  .app-layout__greeting {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .app-layout {
+    padding-left: var(--sidebar-width);
+  }
+
+  .app-layout__main {
+    max-width: 860px;
+    padding-bottom: 60px;
+  }
+}

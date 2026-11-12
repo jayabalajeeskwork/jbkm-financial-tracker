@@ -6,11 +6,12 @@ import {
   formatAmountAsCurrency,
   groupExpensesByCategory,
 } from "../utils/expenseCalculations";
-import MonthSlider from "./MonthSlider";
-import AddExpenseForm from "./AddExpenseForm";
-import ExpenseCategoryList from "./ExpenseCategoryList";
+import MonthSlider from "../components/MonthSlider";
+import AddExpenseForm from "../components/AddExpenseForm";
+import ExpenseCategoryList from "../components/ExpenseCategoryList";
+import "./ExpensePage.css";
 
-export default function MonthlyExpensePage({ loggedInUser, onLogout }) {
+export default function ExpensePage({ loggedInUser }) {
   const [selectedMonthKey, setSelectedMonthKey] = useState(getCurrentMonthKey());
 
   const {
@@ -26,13 +27,13 @@ export default function MonthlyExpensePage({ loggedInUser, onLogout }) {
   const existingCategoryNames = categoryGroups.map((categoryGroup) => categoryGroup.categoryName);
 
   return (
-    <div style={{ maxWidth: 640, margin: "40px auto", padding: "0 16px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h2>Hello, {loggedInUser.displayName}</h2>
-        <button onClick={onLogout}>Logout</button>
-      </div>
-
+    <div className="page-stack">
       <MonthSlider selectedMonthKey={selectedMonthKey} onMonthChange={setSelectedMonthKey} />
+
+      <section className="card expense-total-card">
+        <p className="expense-total-card__label">Total this month</p>
+        <p className="expense-total-card__amount">{formatAmountAsCurrency(monthTotalAmount)}</p>
+      </section>
 
       <AddExpenseForm
         selectedMonthKey={selectedMonthKey}
@@ -40,12 +41,10 @@ export default function MonthlyExpensePage({ loggedInUser, onLogout }) {
         onAddExpense={addExpenseEntry}
       />
 
-      {expenseErrorMessage && <p style={{ color: "crimson" }}>{expenseErrorMessage}</p>}
-
-      <h3>Total this month: {formatAmountAsCurrency(monthTotalAmount)}</h3>
+      {expenseErrorMessage && <p className="error-message">{expenseErrorMessage}</p>}
 
       {isLoadingExpenses ? (
-        <p>Loading expenses...</p>
+        <p className="loading-message">Loading expenses...</p>
       ) : (
         <ExpenseCategoryList
           categoryGroups={categoryGroups}

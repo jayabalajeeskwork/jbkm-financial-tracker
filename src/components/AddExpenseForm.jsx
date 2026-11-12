@@ -4,6 +4,7 @@ import {
   getFirstDateOfMonth,
   getMaximumSelectableDateForMonth,
 } from "../utils/monthUtilities";
+import "./AddExpenseForm.css";
 
 export default function AddExpenseForm({
   selectedMonthKey,
@@ -57,16 +58,18 @@ export default function AddExpenseForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ margin: "24px 0" }}>
+    <form className="card add-expense-form" onSubmit={handleSubmit}>
+      <h3 className="add-expense-form__title">Add expense</h3>
+
       {existingCategoryNames.length > 0 && (
-        <div style={{ marginBottom: 8 }}>
-          <small>Existing categories: </small>
+        <div className="add-expense-form__chip-list">
+          <span className="add-expense-form__chip-label">Tap to reuse:</span>
           {existingCategoryNames.map((existingCategoryName) => (
             <button
               type="button"
+              className="add-expense-form__chip"
               key={existingCategoryName}
               onClick={() => setCategoryNameInput(existingCategoryName)}
-              style={{ marginRight: 6 }}
             >
               {existingCategoryName}
             </button>
@@ -74,8 +77,9 @@ export default function AddExpenseForm({
         </div>
       )}
 
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <div className="add-expense-form__fields">
         <input
+          className="text-input"
           list="existing-category-suggestions"
           placeholder="Category (e.g. Food)"
           value={categoryNameInput}
@@ -88,7 +92,9 @@ export default function AddExpenseForm({
         </datalist>
 
         <input
+          className="text-input"
           type="number"
+          inputMode="decimal"
           min="0"
           step="0.01"
           placeholder="Amount"
@@ -97,6 +103,7 @@ export default function AddExpenseForm({
         />
 
         <input
+          className="text-input"
           type="date"
           value={expenseDateInput}
           min={getFirstDateOfMonth(selectedMonthKey)}
@@ -104,10 +111,12 @@ export default function AddExpenseForm({
           onChange={(event) => setExpenseDateInput(event.target.value)}
         />
 
-        <button type="submit">Add Expense</button>
+        <button className="button" type="submit">
+          Add
+        </button>
       </div>
 
-      {formErrorMessage && <p style={{ color: "crimson" }}>{formErrorMessage}</p>}
+      {formErrorMessage && <p className="error-message">{formErrorMessage}</p>}
     </form>
   );
 }

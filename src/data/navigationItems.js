@@ -1,0 +1,5 @@
+// To add a module later: add one item here, create its page, and add its route in App.jsx
+export const navigationItems = [
+  { navigationItemId: "dashboard", label: "Dashboard", routePath: "/", iconSymbol: "🏠" },
+  { navigationItemId: "expenses", label: "Expenses", routePath: "/expenses", iconSymbol: "💸" },
+];
