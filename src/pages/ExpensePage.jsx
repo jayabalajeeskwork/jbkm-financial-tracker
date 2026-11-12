@@ -13,19 +13,22 @@ import "./ExpensePage.css";
 
 export default function ExpensePage({ loggedInUser }) {
   const [selectedMonthKey, setSelectedMonthKey] = useState(getCurrentMonthKey());
-
-  const {
-    expenseEntriesForSelectedMonth,
-    isLoadingExpenses,
-    expenseErrorMessage,
-    addExpenseEntry,
-    deleteExpenseEntry,
-  } = useMonthlyExpenses(loggedInUser.userId, selectedMonthKey);
+const {
+  expenseEntriesForSelectedMonth,
+  allExpenseEntries,
+  isLoadingExpenses,
+  expenseErrorMessage,
+  addExpenseEntry,
+  deleteExpenseEntry,
+} = useMonthlyExpenses(loggedInUser.userId, selectedMonthKey);
 
   const categoryGroups = groupExpensesByCategory(expenseEntriesForSelectedMonth);
   const monthTotalAmount = calculateMonthTotalAmount(expenseEntriesForSelectedMonth);
-  const existingCategoryNames = categoryGroups.map((categoryGroup) => categoryGroup.categoryName);
-
+const existingCategoryNames = [
+  ...new Set(
+    allExpenseEntries.map((expense) => expense.categoryName)
+  ),
+];
   return (
     <div className="page-stack">
       <MonthSlider selectedMonthKey={selectedMonthKey} onMonthChange={setSelectedMonthKey} />

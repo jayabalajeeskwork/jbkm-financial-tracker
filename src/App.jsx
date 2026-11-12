@@ -1,12 +1,17 @@
+
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+
 import { firebaseAuthentication } from "./services/firebaseConfiguration";
 import { staticUserProfilesByEmail } from "./data/staticUsers";
+
 import LoginPage from "./components/LoginPage";
 import AppLayout from "./components/AppLayout";
+
 import DashboardPage from "./pages/DashboardPage";
 import ExpensePage from "./pages/ExpensePage";
+import InvestmentPage from "./pages/InvestmentPage";
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -19,10 +24,10 @@ export default function App() {
         if (!firebaseUser) {
           setLoggedInUser(null);
         } else {
-          const staticUserProfile = staticUserProfilesByEmail[firebaseUser.email];
+          const staticUserProfile =
+            staticUserProfilesByEmail[firebaseUser.email];
 
           if (!staticUserProfile) {
-            // Valid Firebase user, but not listed in staticUsers.js
             await signOut(firebaseAuthentication);
             setLoggedInUser(null);
           } else {
@@ -33,6 +38,7 @@ export default function App() {
             });
           }
         }
+
         setIsCheckingLoginStatus(false);
       }
     );
@@ -42,16 +48,39 @@ export default function App() {
 
   const handleLogout = () => signOut(firebaseAuthentication);
 
-  if (isCheckingLoginStatus) return <p className="loading-message">Loading...</p>;
-  if (!loggedInUser) return <LoginPage />;
+  if (isCheckingLoginStatus) {
+    return <p className="loading-message">Loading...</p>;
+  }
+
+  if (!loggedInUser) {
+    return <LoginPage />;
+  }
 
   return (
     <Routes>
       <Route
-        element={<AppLayout loggedInUser={loggedInUser} onLogout={handleLogout} />}
+        element={
+          <AppLayout
+            loggedInUser={loggedInUser}
+            onLogout={handleLogout}
+          />
+        }
       >
-        <Route path="/" element={<DashboardPage loggedInUser={loggedInUser} />} />
-        <Route path="/expenses" element={<ExpensePage loggedInUser={loggedInUser} />} />
+        <Route
+          path="/"
+          element={<DashboardPage loggedInUser={loggedInUser} />}
+        />
+
+        <Route
+          path="/expenses"
+          element={<ExpensePage loggedInUser={loggedInUser} />}
+        />
+
+        <Route
+          path="/investments"
+          element={<InvestmentPage loggedInUser={loggedInUser} />}
+        />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

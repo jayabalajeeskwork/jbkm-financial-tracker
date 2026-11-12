@@ -1,3 +1,4 @@
+
 import {
   addDoc,
   collection,
@@ -8,36 +9,69 @@ import {
   serverTimestamp,
   where,
 } from "firebase/firestore";
+
 import { firestoreDatabase } from "./firebaseConfiguration";
 
+// Common collection reference for a particular user
 const buildExpenseEntriesCollectionReference = (userId) =>
   collection(firestoreDatabase, "users", userId, "expenseEntries");
 
-// Live listener: updates automatically whenever data changes
-export const subscribeToExpenseEntriesForMonth = ({
+
+// 1. Get ALL expenses for the user (all months)
+// Used for reusable category suggestions
+export const subscribeToAllExpenseEntriesForUser = ({
   userId,
-  monthKey,
   onExpenseEntriesChanged,
   onLoadingError,
 }) => {
-  const expenseEntriesQuery = query(
-    buildExpenseEntriesCollectionReference(userId),
-    where("monthKey", "==", monthKey)
+  const allExpensesQuery = query(
+    buildExpenseEntriesCollectionReference(userId)
   );
 
   return onSnapshot(
-    expenseEntriesQuery,
-    (querySnapshot) => {
-      const expenseEntries = querySnapshot.docs.map((documentSnapshot) => ({
-        expenseEntryId: documentSnapshot.id,
-        ...documentSnapshot.data(),
+    allExpensesQuery,
+    (snapshot) => {
+      const expenseEntries = snapshot.docs.map((document) => ({
+        expenseEntryId: document.id,
+        ...document.data(),
       }));
+
       onExpenseEntriesChanged(expenseEntries);
     },
     onLoadingError
   );
 };
 
+
+// 2. Get expenses for the selected month only
+// Used for monthly expense list and total
+export const subscribeToExpenseEntriesForMonth = ({
+  userId,
+  monthKey,
+  onExpenseEntriesChanged,
+  onLoadingError,
+}) => {
+  const monthlyExpensesQuery = query(
+    buildExpenseEntriesCollectionReference(userId),
+    where("monthKey", "==", monthKey)
+  );
+
+  return onSnapshot(
+    monthlyExpensesQuery,
+    (snapshot) => {
+      const expenseEntries = snapshot.docs.map((document) => ({
+        expenseEntryId: document.id,
+        ...document.data(),
+      }));
+
+      onExpenseEntriesChanged(expenseEntries);
+    },
+    onLoadingError
+  );
+};
+
+
+// 3. Add a new expense
 export const addExpenseEntryToFirestore = async ({
   userId,
   monthKey,
@@ -45,15 +79,31 @@ export const addExpenseEntryToFirestore = async ({
   amount,
   expenseDate,
 }) => {
-  await addDoc(buildExpenseEntriesCollectionReference(userId), {
-    monthKey,
-    categoryName: categoryName.trim(),
-    amount: Number(amount),
-    expenseDate,
-    createdAt: serverTimestamp(),
-  });
+  await addDoc(
+    buildExpenseEntriesCollectionReference(userId),
+    {
+      monthKey,
+      categoryName: categoryName.trim(),
+      amount: Number(amount),
+      expenseDate,
+      createdAt: serverTimestamp(),
+    }
+  );
 };
 
-export const deleteExpenseEntryFromFirestore = async ({ userId, expenseEntryId }) => {
-  await deleteDoc(doc(firestoreDatabase, "users", userId, "expenseEntries", expenseEntryId));
+
+// 4. Delete an expense
+export const deleteExpenseEntryFromFirestore = async ({
+  userId,
+  expenseEntryId,
+}) => {
+  await deleteDoc(
+    doc(
+      firestoreDatabase,
+      "users",
+      userId,
+      "expenseEntries",
+      expenseEntryId
+    )
+  );
 };
