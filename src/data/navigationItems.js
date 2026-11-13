@@ -30,4 +30,10 @@ export const navigationItems = [
     routePath: "/lending",
     iconSymbol: "💵",
   },
+  {
+  navigationItemId: "wallet",
+  label: "Wallet",
+  routePath: "/wallet",
+  iconSymbol: "👛",
+},
 ];

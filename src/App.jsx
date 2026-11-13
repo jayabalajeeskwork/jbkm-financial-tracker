@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -16,6 +15,7 @@ import InvestmentPage from "./pages/InvestmentPage";
 import StewardshipPage from "./pages/StewardshipPage";
 import LendingPage from "./pages/LendingPage";
 
+import WalletPage from "./pages/WalletPage";
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -44,7 +44,7 @@ export default function App() {
         }
 
         setIsCheckingLoginStatus(false);
-      }
+      },
     );
 
     return unsubscribeFromAuthentication;
@@ -64,10 +64,7 @@ export default function App() {
     <Routes>
       <Route
         element={
-          <AppLayout
-            loggedInUser={loggedInUser}
-            onLogout={handleLogout}
-          />
+          <AppLayout loggedInUser={loggedInUser} onLogout={handleLogout} />
         }
       >
         <Route
@@ -85,18 +82,22 @@ export default function App() {
           element={<InvestmentPage loggedInUser={loggedInUser} />}
         />
         <Route
-  path="/stewardship"
-  element={<StewardshipPage loggedInUser={loggedInUser} />}
-/>
+          path="/stewardship"
+          element={<StewardshipPage loggedInUser={loggedInUser} />}
+        />
 
-<Route
-  path="/lending"
-  element={<LendingPage loggedInUser={loggedInUser} />}
-/>
+        <Route
+          path="/lending"
+          element={<LendingPage loggedInUser={loggedInUser} />}
+        />
+
+        <Route
+          path="/wallet"
+          element={<WalletPage loggedInUser={loggedInUser} />}
+        />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
-      
     </Routes>
   );
 }

@@ -1,0 +1,144 @@
+
+.wallet-source-card {
+  padding: 20px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.wallet-source-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wallet-source-card__name {
+  margin: 0;
+  font-size: 17px;
+  color: #172033;
+}
+
+.wallet-source-card__caption {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.wallet-source-card__balance {
+  font-size: 21px;
+  color: #172033;
+}
+
+.wallet-source-card__history-toggle {
+  margin-top: 18px;
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wallet-source-card__history {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wallet-source-card__history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.wallet-source-card__details {
+  min-width: 0;
+}
+
+.wallet-source-card__date {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.wallet-source-card__note {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #64748b;
+  overflow-wrap: anywhere;
+}
+
+.wallet-source-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.wallet-source-card__amount {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.wallet-source-card__amount--deposit {
+  color: #16a34a;
+}
+
+.wallet-source-card__amount--withdraw {
+  color: #dc2626;
+}
+
+.wallet-source-card__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.wallet-source-card__edit-button,
+.wallet-source-card__delete-button {
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wallet-source-card__edit-button {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.wallet-source-card__delete-button {
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.wallet-source-card__edit-button:disabled,
+.wallet-source-card__delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .wallet-source-card {
+    padding: 15px;
+  }
+
+  .wallet-source-card__history-item {
+    align-items: flex-start;
+  }
+
+  .wallet-source-card__balance {
+    font-size: 18px;
+  }
+}
