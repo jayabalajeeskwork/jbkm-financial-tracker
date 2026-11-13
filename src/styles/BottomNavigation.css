@@ -71,3 +71,10 @@
     background: var(--color-accent-soft);
   }
 }
+
+@media (max-width: 899px) {
+  .bottom-navigation__link {
+    font-size: 0.68rem;
+    padding: 0 2px;
+  }
+}

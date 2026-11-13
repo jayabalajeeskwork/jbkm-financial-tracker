@@ -1,0 +1,116 @@
+.stewardship-add-form {
+  background: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stewardship-add-form__title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.stewardship-add-form__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.stewardship-add-form__chip-label {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.stewardship-add-form__chip {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--stewardship-accent-soft);
+  border-radius: 999px;
+  background: var(--stewardship-accent-soft);
+  color: var(--stewardship-accent);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stewardship-add-form__chip:hover {
+  border-color: var(--stewardship-accent);
+}
+
+.stewardship-add-form__fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.stewardship-add-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stewardship-add-form__field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.stewardship-add-form__input {
+  width: 100%;
+  min-height: var(--touch-target-size);
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: #fff;
+  font: inherit;
+  font-size: 16px; /* stops iPhone zoom on focus */
+}
+
+.stewardship-add-form__input:focus {
+  outline: 2px solid var(--stewardship-accent);
+  border-color: var(--stewardship-accent);
+}
+
+.stewardship-add-form__error {
+  color: var(--stewardship-danger);
+  background: var(--stewardship-danger-soft);
+  border-radius: var(--radius-control);
+  padding: 10px 12px;
+  font-size: 0.92rem;
+}
+
+.stewardship-add-form__submit-button {
+  min-height: var(--touch-target-size);
+  border: none;
+  border-radius: var(--radius-control);
+  background: var(--stewardship-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stewardship-add-form__submit-button:hover:not(:disabled) {
+  background: var(--stewardship-accent-hover);
+}
+
+.stewardship-add-form__submit-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (min-width: 640px) {
+  .stewardship-add-form {
+    padding: 18px;
+  }
+
+  .stewardship-add-form__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,153 @@
+.lending-person-card {
+  background: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lending-person-card--settled {
+  opacity: 0.65;
+}
+
+.lending-person-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lending-person-card__name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.lending-person-card__caption {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.lending-person-card__balance {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--lending-accent);
+  white-space: nowrap;
+}
+
+.lending-person-card__repayment-form {
+  display: flex;
+  gap: 8px;
+}
+
+.lending-person-card__repayment-input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--touch-target-size);
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: #fff;
+  font: inherit;
+  font-size: 16px;
+}
+
+.lending-person-card__repayment-input:focus {
+  outline: 2px solid var(--lending-accent);
+  border-color: var(--lending-accent);
+}
+
+.lending-person-card__repayment-button {
+  min-height: var(--touch-target-size);
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--radius-control);
+  background: var(--lending-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lending-person-card__repayment-button:hover:not(:disabled) {
+  background: var(--lending-accent-hover);
+}
+
+.lending-person-card__repayment-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.lending-person-card__error {
+  color: var(--lending-danger);
+  background: var(--lending-danger-soft);
+  border-radius: var(--radius-control);
+  padding: 8px 12px;
+  font-size: 0.88rem;
+}
+
+.lending-person-card__history-toggle {
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--lending-accent);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lending-person-card__history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.lending-person-card__history-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.lending-person-card__history-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.lending-person-card__history-date {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.lending-person-card__history-note {
+  font-size: 0.92rem;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.lending-person-card__history-amount {
+  white-space: nowrap;
+}
+
+.lending-person-card__history-amount--lent {
+  color: var(--lending-accent);
+}
+
+.lending-person-card__history-amount--repaid {
+  color: var(--lending-danger);
+}
+
+@media (min-width: 640px) {
+  .lending-person-card {
+    padding: 18px;
+  }
+}

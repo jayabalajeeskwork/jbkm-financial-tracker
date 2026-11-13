@@ -18,4 +18,16 @@ export const navigationItems = [
     routePath: "/investments",
     iconSymbol: "📈",
   },
+    {
+    navigationItemId: "stewardship",
+    label: "Stewardship",
+    routePath: "/stewardship",
+    iconSymbol: "🤝",
+  },
+  {
+    navigationItemId: "lending",
+    label: "Lending",
+    routePath: "/lending",
+    iconSymbol: "💵",
+  },
 ];

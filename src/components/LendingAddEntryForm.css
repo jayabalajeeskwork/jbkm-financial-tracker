@@ -1,0 +1,116 @@
+.lending-add-form {
+  background: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lending-add-form__title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.lending-add-form__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.lending-add-form__chip-label {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.lending-add-form__chip {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--lending-accent-soft);
+  border-radius: 999px;
+  background: var(--lending-accent-soft);
+  color: var(--lending-accent);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lending-add-form__chip:hover {
+  border-color: var(--lending-accent);
+}
+
+.lending-add-form__fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.lending-add-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lending-add-form__field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.lending-add-form__input {
+  width: 100%;
+  min-height: var(--touch-target-size);
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: #fff;
+  font: inherit;
+  font-size: 16px; /* stops iPhone zoom on focus */
+}
+
+.lending-add-form__input:focus {
+  outline: 2px solid var(--lending-accent);
+  border-color: var(--lending-accent);
+}
+
+.lending-add-form__error {
+  color: var(--lending-danger);
+  background: var(--lending-danger-soft);
+  border-radius: var(--radius-control);
+  padding: 10px 12px;
+  font-size: 0.92rem;
+}
+
+.lending-add-form__submit-button {
+  min-height: var(--touch-target-size);
+  border: none;
+  border-radius: var(--radius-control);
+  background: var(--lending-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lending-add-form__submit-button:hover:not(:disabled) {
+  background: var(--lending-accent-hover);
+}
+
+.lending-add-form__submit-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (min-width: 640px) {
+  .lending-add-form {
+    padding: 18px;
+  }
+
+  .lending-add-form__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}

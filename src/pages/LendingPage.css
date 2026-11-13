@@ -1,0 +1,78 @@
+/* The module's own colors. All lending components read these variables. */
+.lending-page {
+  --lending-accent: #c2410c;
+  --lending-accent-hover: #9a3412;
+  --lending-accent-soft: #ffedd5;
+  --lending-danger: #d6336c;
+  --lending-danger-soft: #fdecf3;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lending-summary {
+  background: var(--lending-accent);
+  color: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 18px 16px;
+}
+
+.lending-summary__label {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.lending-summary__amount {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.lending-summary__message {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.lending-page__error {
+  color: var(--lending-danger);
+  background: var(--lending-danger-soft);
+  border-radius: var(--radius-control);
+  padding: 10px 12px;
+  font-size: 0.92rem;
+}
+
+.lending-page__status-text {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: 28px 12px;
+}
+
+.lending-person-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .lending-page {
+    gap: 18px;
+  }
+
+  .lending-summary {
+    padding: 22px 20px;
+  }
+
+  .lending-summary__amount {
+    font-size: 2.4rem;
+  }
+
+  .lending-person-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+}

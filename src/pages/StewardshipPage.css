@@ -1,0 +1,78 @@
+/* The module's own colors. All stewardship components read these variables. */
+.stewardship-page {
+  --stewardship-accent: #0f766e;
+  --stewardship-accent-hover: #0b5f59;
+  --stewardship-accent-soft: #ccfbf1;
+  --stewardship-danger: #d6336c;
+  --stewardship-danger-soft: #fdecf3;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stewardship-summary {
+  background: var(--stewardship-accent);
+  color: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 18px 16px;
+}
+
+.stewardship-summary__label {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.stewardship-summary__amount {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.stewardship-summary__message {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.stewardship-page__error {
+  color: var(--stewardship-danger);
+  background: var(--stewardship-danger-soft);
+  border-radius: var(--radius-control);
+  padding: 10px 12px;
+  font-size: 0.92rem;
+}
+
+.stewardship-page__status-text {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: 28px 12px;
+}
+
+.stewardship-person-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .stewardship-page {
+    gap: 18px;
+  }
+
+  .stewardship-summary {
+    padding: 22px 20px;
+  }
+
+  .stewardship-summary__amount {
+    font-size: 2.4rem;
+  }
+
+  .stewardship-person-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+}

@@ -13,6 +13,10 @@ import DashboardPage from "./pages/DashboardPage";
 import ExpensePage from "./pages/ExpensePage";
 import InvestmentPage from "./pages/InvestmentPage";
 
+import StewardshipPage from "./pages/StewardshipPage";
+import LendingPage from "./pages/LendingPage";
+
+
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isCheckingLoginStatus, setIsCheckingLoginStatus] = useState(true);
@@ -80,9 +84,19 @@ export default function App() {
           path="/investments"
           element={<InvestmentPage loggedInUser={loggedInUser} />}
         />
+        <Route
+  path="/stewardship"
+  element={<StewardshipPage loggedInUser={loggedInUser} />}
+/>
+
+<Route
+  path="/lending"
+  element={<LendingPage loggedInUser={loggedInUser} />}
+/>
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
+      
     </Routes>
   );
 }
