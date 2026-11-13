@@ -1,14 +1,19 @@
+
 import { useEffect, useMemo, useState } from "react";
+
 import {
   STEWARDSHIP_TRANSACTION_TYPE_RECEIVED,
   STEWARDSHIP_TRANSACTION_TYPE_RETURNED,
   addStewardshipTransaction,
+  deleteStewardshipTransaction,
   subscribeToStewardshipTransactions,
 } from "../services/stewardshipFirestoreService";
+
 import {
   calculateTotalBalance,
   groupTransactionsByPerson,
 } from "../utils/personBalanceCalculations";
+
 import { getTodayDateInputValue } from "../utils/transactionDateHelpers";
 
 export const useStewardship = (userId) => {
@@ -17,14 +22,21 @@ export const useStewardship = (userId) => {
   const [stewardshipErrorMessage, setStewardshipErrorMessage] = useState("");
 
   useEffect(() => {
+    if (!userId) {
+      setIsLoadingStewardship(false);
+      return;
+    }
+
     setIsLoadingStewardship(true);
 
     const unsubscribeFromTransactions = subscribeToStewardshipTransactions({
       userId,
+
       onTransactionsChanged: (transactions) => {
         setStewardshipTransactions(transactions);
         setIsLoadingStewardship(false);
       },
+
       onLoadingError: (error) => {
         console.error(error);
         setStewardshipErrorMessage("Could not load stewardship data");
@@ -50,11 +62,16 @@ export const useStewardship = (userId) => {
     [personBalances]
   );
 
-  // Returns true when saved, false when failed
+  // Save transaction
   const saveTransaction = async (transactionDetails) => {
     try {
       setStewardshipErrorMessage("");
-      await addStewardshipTransaction({ userId, ...transactionDetails });
+
+      await addStewardshipTransaction({
+        userId,
+        ...transactionDetails,
+      });
+
       return true;
     } catch (error) {
       console.error(error);
@@ -63,6 +80,7 @@ export const useStewardship = (userId) => {
     }
   };
 
+  // Receive money
   const receiveMoney = ({ personName, amount, note, transactionDate }) =>
     saveTransaction({
       personName,
@@ -72,6 +90,7 @@ export const useStewardship = (userId) => {
       transactionType: STEWARDSHIP_TRANSACTION_TYPE_RECEIVED,
     });
 
+  // Return money
   const returnMoney = ({ personName, amount }) =>
     saveTransaction({
       personName,
@@ -81,6 +100,27 @@ export const useStewardship = (userId) => {
       transactionType: STEWARDSHIP_TRANSACTION_TYPE_RETURNED,
     });
 
+  // Delete individual transaction
+  const deleteTransaction = async (transactionId) => {
+    try {
+      setStewardshipErrorMessage("");
+
+      await deleteStewardshipTransaction({
+        userId,
+        transactionId,
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Delete transaction error:", error);
+      setStewardshipErrorMessage(
+        "Could not delete transaction. Please try again."
+      );
+
+      return false;
+    }
+  };
+
   return {
     personBalances,
     totalAmountHeldForOthers,
@@ -88,5 +128,6 @@ export const useStewardship = (userId) => {
     stewardshipErrorMessage,
     receiveMoney,
     returnMoney,
+    deleteTransaction,
   };
 };

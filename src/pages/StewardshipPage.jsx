@@ -12,6 +12,7 @@ export default function StewardshipPage({ loggedInUser }) {
     stewardshipErrorMessage,
     receiveMoney,
     returnMoney,
+    deleteTransaction,
   } = useStewardship(loggedInUser.userId);
 
   const existingPersonNames = personBalances.map(
@@ -29,9 +30,11 @@ export default function StewardshipPage({ loggedInUser }) {
         <p className="stewardship-summary__label">
           Total money you are holding
         </p>
+
         <p className="stewardship-summary__amount">
           {formatMoneyAmount(totalAmountHeldForOthers)}
         </p>
+
         <p className="stewardship-summary__message">{summaryMessage}</p>
       </section>
 
@@ -55,6 +58,7 @@ export default function StewardshipPage({ loggedInUser }) {
               key={personBalance.personNameKey}
               personBalance={personBalance}
               onReturnMoney={returnMoney}
+              onDeleteTransaction={deleteTransaction}
             />
           ))}
         </div>

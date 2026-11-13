@@ -6,11 +6,13 @@ import "./StewardshipPersonCard.css";
 export default function StewardshipPersonCard({
   personBalance,
   onReturnMoney,
+  onDeleteTransaction,
 }) {
   const [returnAmountInput, setReturnAmountInput] = useState("");
   const [returnErrorMessage, setReturnErrorMessage] = useState("");
   const [isSavingReturn, setIsSavingReturn] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [deletingTransactionId, setDeletingTransactionId] = useState(null);
 
   const isSettled = personBalance.currentBalance <= 0;
 
@@ -22,6 +24,7 @@ export default function StewardshipPersonCard({
       setReturnErrorMessage("Enter an amount greater than 0");
       return;
     }
+
     if (returnAmount > personBalance.currentBalance) {
       setReturnErrorMessage(
         `You are only holding ${formatMoneyAmount(personBalance.currentBalance)} for ${personBalance.personName}`,
@@ -38,6 +41,27 @@ export default function StewardshipPersonCard({
 
     if (wasSaved) {
       setReturnAmountInput("");
+      setReturnErrorMessage("");
+    }
+  };
+
+  // Delete individual history entry
+  const handleDeleteTransaction = async (transaction) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete this ${transaction.transactionType} entry of ${formatMoneyAmount(transaction.amount)} for ${personBalance.personName}?`,
+    );
+
+    if (!confirmed) return;
+
+    setDeletingTransactionId(transaction.transactionId);
+
+    const wasDeleted = await onDeleteTransaction(transaction.transactionId);
+
+    setDeletingTransactionId(null);
+
+    if (!wasDeleted) {
+      setReturnErrorMessage("Could not delete this entry. Please try again.");
+    } else {
       setReturnErrorMessage("");
     }
   };
@@ -108,6 +132,9 @@ export default function StewardshipPersonCard({
         <ul className="stewardship-person-card__history">
           {personBalance.personTransactions.map((transaction) => {
             const isReceived = transaction.transactionType === "received";
+            const isDeleting =
+              deletingTransactionId === transaction.transactionId;
+
             return (
               <li
                 className="stewardship-person-card__history-item"
@@ -120,12 +147,14 @@ export default function StewardshipPersonCard({
                     )}{" "}
                     · {isReceived ? "Received" : "Returned"}
                   </p>
+
                   {transaction.note && (
                     <p className="stewardship-person-card__history-note">
                       {transaction.note}
                     </p>
                   )}
                 </div>
+
                 <strong
                   className={
                     isReceived
@@ -136,6 +165,15 @@ export default function StewardshipPersonCard({
                   {isReceived ? "+" : "−"}
                   {formatMoneyAmount(transaction.amount)}
                 </strong>
+
+                <button
+                  type="button"
+                  className="stewardship-person-card__delete-button"
+                  disabled={isDeleting || Boolean(deletingTransactionId)}
+                  onClick={() => handleDeleteTransaction(transaction)}
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
               </li>
             );
           })}
