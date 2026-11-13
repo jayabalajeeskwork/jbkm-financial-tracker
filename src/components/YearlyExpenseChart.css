@@ -1,0 +1,130 @@
+
+.yearly-expense-chart {
+  padding: 22px;
+  margin-top: 20px;
+  min-width: 0;
+}
+
+.yearly-expense-chart__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.yearly-expense-chart__header h2 {
+  margin: 0 0 6px;
+  font-size: 19px;
+}
+
+.yearly-expense-chart__header p {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.yearly-expense-chart__total {
+  text-align: right;
+}
+
+.yearly-expense-chart__total span {
+  display: block;
+  color: #888;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.yearly-expense-chart__total strong {
+  font-size: 20px;
+}
+
+.yearly-expense-chart__scroll {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.yearly-expense-chart__bars {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(65px, 1fr));
+  gap: 12px;
+  min-width: 780px;
+}
+
+.yearly-expense-chart__month {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.yearly-expense-chart__bar-area {
+  width: 100%;
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+}
+
+.yearly-expense-chart__amount {
+  font-size: 10px;
+  color: #777;
+  white-space: nowrap;
+}
+
+.yearly-expense-chart__bar-background {
+  width: 65%;
+  height: 145px;
+  background: #f1f5f9;
+  border-radius: 7px 7px 0 0;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.yearly-expense-chart__bar {
+  width: 100%;
+  min-height: 0;
+  background: #f59e0b;
+  border-radius: 7px 7px 0 0;
+  transition: height 0.3s ease;
+}
+
+.yearly-expense-chart__month-label {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.yearly-expense-chart__month-total {
+  margin-top: 5px;
+  font-size: 10px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.yearly-expense-chart__empty {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .yearly-expense-chart {
+    padding: 16px;
+  }
+
+  .yearly-expense-chart__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .yearly-expense-chart__total {
+    text-align: left;
+  }
+}
