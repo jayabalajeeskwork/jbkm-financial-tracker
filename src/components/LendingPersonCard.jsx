@@ -6,11 +6,15 @@ import "./LendingPersonCard.css";
 export default function LendingPersonCard({
   personBalance,
   onReceiveRepayment,
+  onDeleteTransaction,
 }) {
   const [repaymentAmountInput, setRepaymentAmountInput] = useState("");
   const [repaymentErrorMessage, setRepaymentErrorMessage] = useState("");
   const [isSavingRepayment, setIsSavingRepayment] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+  const [deletingTransactionId, setDeletingTransactionId] = useState(null);
+  const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
 
   const isSettled = personBalance.currentBalance <= 0;
 
@@ -22,6 +26,7 @@ export default function LendingPersonCard({
       setRepaymentErrorMessage("Enter an amount greater than 0");
       return;
     }
+
     if (repaymentAmount > personBalance.currentBalance) {
       setRepaymentErrorMessage(
         `${personBalance.personName} only owes you ${formatMoneyAmount(personBalance.currentBalance)}`,
@@ -29,16 +34,46 @@ export default function LendingPersonCard({
       return;
     }
 
+    const confirmed = window.confirm(
+      `Confirm receiving ${formatMoneyAmount(repaymentAmount)} from ${personBalance.personName}?`,
+    );
+
+    if (!confirmed) return;
+
     setIsSavingRepayment(true);
+
     const wasSaved = await onReceiveRepayment({
       personName: personBalance.personName,
       amount: repaymentAmount,
     });
+
     setIsSavingRepayment(false);
 
     if (wasSaved) {
       setRepaymentAmountInput("");
       setRepaymentErrorMessage("");
+    }
+  };
+
+  const handleDeleteTransaction = async (transaction) => {
+    const transactionLabel =
+      transaction.transactionType === "lent" ? "Lent" : "Repaid";
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete this ${transactionLabel} entry of ${formatMoneyAmount(transaction.amount)} for ${personBalance.personName}?`,
+    );
+
+    if (!confirmed) return;
+
+    setDeletingTransactionId(transaction.transactionId);
+    setDeleteErrorMessage("");
+
+    const wasDeleted = await onDeleteTransaction(transaction.transactionId);
+
+    setDeletingTransactionId(null);
+
+    if (!wasDeleted) {
+      setDeleteErrorMessage("Could not delete this entry. Please try again.");
     }
   };
 
@@ -108,6 +143,7 @@ export default function LendingPersonCard({
         <ul className="lending-person-card__history">
           {personBalance.personTransactions.map((transaction) => {
             const isLent = transaction.transactionType === "lent";
+
             return (
               <li
                 className="lending-person-card__history-item"
@@ -120,12 +156,14 @@ export default function LendingPersonCard({
                     )}{" "}
                     · {isLent ? "Lent" : "Repaid"}
                   </p>
+
                   {transaction.note && (
                     <p className="lending-person-card__history-note">
                       {transaction.note}
                     </p>
                   )}
                 </div>
+
                 <strong
                   className={
                     isLent
@@ -136,10 +174,25 @@ export default function LendingPersonCard({
                   {isLent ? "+" : "−"}
                   {formatMoneyAmount(transaction.amount)}
                 </strong>
+
+                <button
+                  type="button"
+                  className="lending-person-card__delete-button"
+                  disabled={Boolean(deletingTransactionId)}
+                  onClick={() => handleDeleteTransaction(transaction)}
+                >
+                  {deletingTransactionId === transaction.transactionId
+                    ? "Deleting..."
+                    : "Delete"}
+                </button>
               </li>
             );
           })}
         </ul>
+      )}
+
+      {deleteErrorMessage && (
+        <p className="lending-person-card__error">{deleteErrorMessage}</p>
       )}
     </article>
   );

@@ -12,11 +12,24 @@ export default function LendingPage({ loggedInUser }) {
     lendingErrorMessage,
     lendMoney,
     receiveRepayment,
+    deleteTransaction,
   } = useLending(loggedInUser.userId);
 
   const existingPersonNames = personBalances.map(
     (personBalance) => personBalance.personName,
   );
+
+  const handleLendMoney = async (transactionDetails) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to record lending of ${formatMoneyAmount(
+        transactionDetails.amount,
+      )} to ${transactionDetails.personName}?`,
+    );
+
+    if (!confirmed) return false;
+
+    return await lendMoney(transactionDetails);
+  };
 
   const summaryMessage =
     totalAmountOwedToYou > 0
@@ -35,7 +48,7 @@ export default function LendingPage({ loggedInUser }) {
 
       <LendingAddEntryForm
         existingPersonNames={existingPersonNames}
-        onLendMoney={lendMoney}
+        onLendMoney={handleLendMoney}
       />
 
       {lendingErrorMessage && (
@@ -53,6 +66,7 @@ export default function LendingPage({ loggedInUser }) {
               key={personBalance.personNameKey}
               personBalance={personBalance}
               onReceiveRepayment={receiveRepayment}
+              onDeleteTransaction={deleteTransaction}
             />
           ))}
         </div>

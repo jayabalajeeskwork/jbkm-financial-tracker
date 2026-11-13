@@ -1,4 +1,11 @@
-import { addDoc, collection, onSnapshot, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  serverTimestamp,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { firestoreDatabase } from "./firebaseConfiguration";
 
 export const LENDING_TRANSACTION_TYPE_LENT = "lent";
@@ -46,4 +53,23 @@ export const addLendingTransaction = async ({
     transactionDate,
     createdAt: serverTimestamp(),
   });
+};
+
+export const deleteLendingTransaction = async ({
+  userId,
+  transactionId,
+}) => {
+  if (!userId || !transactionId) {
+    throw new Error("User ID or transaction ID is missing.");
+  }
+
+  await deleteDoc(
+    doc(
+      firestoreDatabase,
+      "users",
+      userId,
+      "lendingTransactions",
+      transactionId
+    )
+  );
 };

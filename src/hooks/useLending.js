@@ -4,6 +4,7 @@ import {
   LENDING_TRANSACTION_TYPE_REPAID,
   addLendingTransaction,
   subscribeToLendingTransactions,
+  deleteLendingTransaction,
 } from "../services/lendingFirestoreService";
 import {
   calculateTotalBalance,
@@ -81,6 +82,23 @@ export const useLending = (userId) => {
       transactionType: LENDING_TRANSACTION_TYPE_REPAID,
     });
 
+  const deleteTransaction = async (transactionId) => {
+    try {
+      setLendingErrorMessage("");
+
+      await deleteLendingTransaction({
+        userId,
+        transactionId,
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Delete lending transaction error:", error);
+      setLendingErrorMessage("Could not delete transaction. Please try again.");
+      return false;
+    }
+  };
+
   return {
     personBalances,
     totalAmountOwedToYou,
@@ -88,5 +106,6 @@ export const useLending = (userId) => {
     lendingErrorMessage,
     lendMoney,
     receiveRepayment,
+    deleteTransaction,
   };
 };
