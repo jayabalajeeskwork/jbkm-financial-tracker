@@ -39,10 +39,14 @@
   font-size: 20px;
 }
 
+/* Original horizontal scrolling chart */
+
 .yearly-expense-chart__scroll {
   width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .yearly-expense-chart__bars {
@@ -114,6 +118,8 @@
   margin-top: 20px;
 }
 
+/* Mobile chart header */
+
 @media (max-width: 600px) {
   .yearly-expense-chart {
     padding: 16px;
@@ -127,4 +133,198 @@
   .yearly-expense-chart__total {
     text-align: left;
   }
+}
+
+/* Expense Category Summary */
+
+.expense-category-summary {
+  margin-top: 20px;
+  padding: 22px;
+}
+
+.expense-category-summary__header {
+  margin-bottom: 18px;
+}
+
+.expense-category-summary__header h2 {
+  margin: 0 0 5px;
+}
+
+.expense-category-summary__header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Average Monthly Expense */
+
+.expense-category-summary__average {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: #f1f5f9;
+}
+
+.expense-category-summary__average span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.expense-category-summary__average strong {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.expense-category-summary__average small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* Category Summary List */
+
+.expense-category-summary__list {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.expense-category-summary__list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 4px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.expense-category-summary__list-item:last-child {
+  border-bottom: none;
+}
+
+.expense-category-summary__list-item span {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.expense-category-summary__list-item strong {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.expense-category-summary__empty {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .yearly-expense-chart {
+    padding: 16px;
+  }
+
+  .expense-category-summary {
+    padding: 16px;
+  }
+
+  .expense-category-summary__average {
+    padding: 14px;
+  }
+
+  .expense-category-summary__average strong {
+    font-size: 22px;
+  }
+
+  .expense-category-summary__list-item {
+    padding: 12px 2px;
+  }
+}
+
+/* Keep all 13 months in one horizontal row */
+.yearly-expense-chart__scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.yearly-expense-chart__bars {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(65px, 1fr));
+  gap: 12px;
+  min-width: 1000px;
+  width: 100%;
+}
+
+.yearly-expense-chart__month {
+  min-width: 0;
+}
+/* Category Dropdown */
+.expense-category-summary__dropdown {
+  margin-top: 12px;
+}
+
+.expense-category-summary__dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  cursor: pointer;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-weight: 600;
+  list-style: none;
+}
+
+.expense-category-summary__dropdown-header::-webkit-details-marker {
+  display: none;
+}
+
+.expense-category-summary__dropdown-header::after {
+  content: "▼";
+  font-size: 11px;
+  transition: transform 0.2s ease;
+}
+
+.expense-category-summary__dropdown[open]
+.expense-category-summary__dropdown-header::after {
+  transform: rotate(180deg);
+}
+
+.expense-category-summary__dropdown-count {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.expense-category-summary__list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px;
+  margin: 0;
+  list-style: none;
+}
+
+.expense-category-summary__list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 4px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.expense-category-summary__list-item:last-child {
+  border-bottom: none;
 }

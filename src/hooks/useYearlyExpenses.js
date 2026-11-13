@@ -1,4 +1,3 @@
-
 import { useEffect, useMemo, useState } from "react";
 
 import {
@@ -38,14 +37,14 @@ export const useYearlyExpenses = (userId) => {
     return unsubscribe;
   }, [userId]);
 
-  // Calculate the latest 12 months
+  // Latest 13 calendar-month labels: same month last year through current month
   const monthlyExpenses = useMemo(() => {
     const today = new Date();
 
-    const months = Array.from({ length: 12 }, (_, index) => {
+    const months = Array.from({ length: 13 }, (_, index) => {
       const date = new Date(
         today.getFullYear(),
-        today.getMonth() - 11 + index,
+        today.getMonth() - 12 + index,
         1
       );
 
@@ -88,9 +87,46 @@ export const useYearlyExpenses = (userId) => {
     0
   );
 
+  // Average monthly expense, using a 12-month average
+  const averageMonthlyExpense = totalYearExpense / 12;
+
+  // Count entries by category within the displayed date range
+  const categoryExpenseSummary = useMemo(() => {
+    const validMonthKeys = new Set(
+      monthlyExpenses.map((month) => month.monthKey)
+    );
+
+    const categoryGroups = {};
+
+    allExpenseEntries.forEach((expense) => {
+      const monthKey =
+        expense.monthKey || expense.expenseDate?.slice(0, 7);
+
+      if (!validMonthKeys.has(monthKey)) return;
+
+      const categoryName = expense.categoryName?.trim() || "Other";
+      const categoryKey = categoryName.toLowerCase();
+
+      if (!categoryGroups[categoryKey]) {
+        categoryGroups[categoryKey] = {
+          categoryName,
+          totalEntries: 0,
+        };
+      }
+
+      categoryGroups[categoryKey].totalEntries += 1;
+    });
+
+    return Object.values(categoryGroups).sort(
+      (a, b) => b.totalEntries - a.totalEntries
+    );
+  }, [allExpenseEntries, monthlyExpenses]);
+
   return {
     monthlyExpenses,
     totalYearExpense,
+    averageMonthlyExpense,
+    categoryExpenseSummary,
     isLoadingYearlyExpenses: isLoading,
     yearlyExpenseError: errorMessage,
   };
