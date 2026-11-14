@@ -17,6 +17,7 @@ import LendingPage from "./pages/LendingPage";
 
 import WalletPage from "./pages/WalletPage";
 
+import GoalsPage from "./pages/GoalsPage";
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isCheckingLoginStatus, setIsCheckingLoginStatus] = useState(true);
@@ -95,6 +96,8 @@ export default function App() {
           path="/wallet"
           element={<WalletPage loggedInUser={loggedInUser} />}
         />
+
+        <Route path="/goals" element={<GoalsPage userId={user.uid} />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
