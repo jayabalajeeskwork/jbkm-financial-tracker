@@ -8,6 +8,7 @@ export default function YearlyExpenseChart({ userId }) {
     monthlyExpenses,
     totalYearExpense,
     averageMonthlyExpense,
+    allExpenseEntriesTotal,
     categoryExpenseSummary,
     isLoadingYearlyExpenses,
     yearlyExpenseError,
@@ -15,7 +16,7 @@ export default function YearlyExpenseChart({ userId }) {
 
   const highestExpense = Math.max(
     ...monthlyExpenses.map((month) => month.totalAmount),
-    0
+    0,
   );
 
   if (isLoadingYearlyExpenses) {
@@ -91,7 +92,7 @@ export default function YearlyExpenseChart({ userId }) {
                         className="yearly-expense-chart__bar"
                         style={{ height: `${barHeight}%` }}
                         title={`${month.monthLabel}: ${formatMoneyAmount(
-                          month.totalAmount
+                          month.totalAmount,
                         )}`}
                       />
                     </div>
@@ -117,63 +118,91 @@ export default function YearlyExpenseChart({ userId }) {
         )}
       </section>
 
-   {/* Category Expense Summary */}
-<section className="card expense-category-summary">
-  <div className="expense-category-summary__header">
-    <div>
-      <h2>Expense Category Summary</h2>
-      <p>Most frequently used categories</p>
-    </div>
-  </div>
-
-  {/* Average Monthly Expense */}
-  <div className="expense-category-summary__average">
-    <span>Average Monthly Expense</span>
-    <strong>{formatMoneyAmount(averageMonthlyExpense)}</strong>
-    <small>Based on total expenses divided by 12 months</small>
-  </div>
-
-{/* Category List Dropdown */}
-{/* Category List Dropdown */}
-{categoryExpenseSummary.length > 0 ? (
-  <details className="expense-category-summary__dropdown">
-    <summary className="expense-category-summary__dropdown-header">
-      <span>View All Categories</span>
-
-      <span className="expense-category-summary__dropdown-count">
-        {categoryExpenseSummary.length} Categories
-      </span>
-    </summary>
-
-    <ul className="expense-category-summary__list">
-      {categoryExpenseSummary.map((category) => (
-        <li
-          className="expense-category-summary__list-item"
-          key={category.categoryName.toLowerCase()}
-        >
+      {/* Category Expense Summary */}
+      <section className="card expense-category-summary">
+        <div className="expense-category-summary__header">
           <div>
-            <strong>{category.categoryName}</strong>
+            <h2>Expense Category Summary</h2>
+            <p>Most frequently used categories</p>
+          </div>
+        </div>
 
-            <small>
-              Average: {formatMoneyAmount(category.averagePerEntry)}
-            </small>
+        {/* Overall Expense Summary */}
+        <div className="expense-category-summary__metrics">
+          <div className="expense-category-summary__average">
+            <span>Average</span>
+            <strong>{formatMoneyAmount(averageMonthlyExpense)}</strong>
           </div>
 
-          <strong>
-            {category.totalEntries}{" "}
-            {category.totalEntries === 1 ? "Entry" : "Entries"}
-          </strong>
-        </li>
-      ))}
-    </ul>
-  </details>
-) : (
-  <p className="expense-category-summary__empty">
-    No expense categories recorded in this period.
-  </p>
-)}
-</section>
-      
+          <div className="expense-category-summary__average">
+            <span>Yearly</span>
+            <strong>{formatMoneyAmount(totalYearExpense)}</strong>
+          </div>
+
+          <div className="expense-category-summary__average">
+            <span>Total</span>
+            <strong>{formatMoneyAmount(allExpenseEntriesTotal)}</strong>
+          </div>
+        </div>
+
+        {/* Category List Dropdown */}
+        {categoryExpenseSummary.length > 0 ? (
+          <details className="expense-category-summary__dropdown">
+            <summary className="expense-category-summary__dropdown-header">
+              <span>View All Categories</span>
+
+              <span className="expense-category-summary__dropdown-count">
+                {categoryExpenseSummary.length} Categories
+              </span>
+            </summary>
+
+            <ul className="expense-category-summary__list">
+              {categoryExpenseSummary.map((category) => (
+                <li
+                  className="expense-category-summary__list-item"
+                  key={category.categoryName.toLowerCase()}
+                >
+                  <div className="expense-category-summary__category-info">
+                    <strong>{category.categoryName}</strong>
+
+                    <div className="expense-category-summary__amounts">
+                      <span>
+                        Average:
+                        <strong>
+                          {formatMoneyAmount(category.averagePerEntry)}
+                        </strong>
+                      </span>
+
+                      <span>
+                        Yearly:
+                        <strong>
+                          {formatMoneyAmount(category.yearlyAmount)}
+                        </strong>
+                      </span>
+
+                      <span>
+                        Total:
+                        <strong>
+                          {formatMoneyAmount(category.totalAmount)}
+                        </strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <strong className="expense-category-summary__entry-count">
+                    {category.totalEntries}{" "}
+                    {category.totalEntries === 1 ? "Entry" : "Entries"}
+                  </strong>
+                </li>
+              ))}
+            </ul>
+          </details>
+        ) : (
+          <p className="expense-category-summary__empty">
+            No expense categories recorded.
+          </p>
+        )}
+      </section>
     </>
   );
 }

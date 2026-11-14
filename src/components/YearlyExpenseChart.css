@@ -339,3 +339,97 @@
   font-size: 12px;
   color: #64748b;
 }
+
+/* Today's Expense + Average Monthly Expense */
+.expense-category-summary__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.expense-category-summary__metrics .expense-category-summary__average {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.expense-category-summary__average span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.expense-category-summary__average > strong {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+/* Category Information */
+.expense-category-summary__category-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.expense-category-summary__amounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.expense-category-summary__amounts span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.expense-category-summary__amounts span strong {
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.expense-category-summary__entry-count {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.expense-category-summary__list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 4px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.expense-category-summary__list-item:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  .expense-category-summary__metrics {
+    gap: 8px;
+  }
+
+  .expense-category-summary__metrics .expense-category-summary__average {
+    padding: 12px;
+  }
+
+  .expense-category-summary__average > strong {
+    font-size: 17px;
+  }
+
+  .expense-category-summary__amounts {
+    gap: 10px 14px;
+  }
+
+  .expense-category-summary__list-item {
+    align-items: flex-start;
+  }
+}
