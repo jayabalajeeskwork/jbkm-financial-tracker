@@ -97,9 +97,13 @@ export default function App() {
           element={<WalletPage loggedInUser={loggedInUser} />}
         />
 
-        <Route
+        {/* <Route
           path="/goals"
           element={<GoalsPage loggedInUser={loggedInUser} />}
+        /> */}
+        <Route
+          path="/goals"
+          element={<GoalsPage userId={loggedInUser.userId} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />
