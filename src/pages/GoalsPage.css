@@ -417,3 +417,74 @@
     align-items: flex-start;
   }
 }
+
+.goal-form__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.goals-button--edit {
+  background: #2563eb;
+  color: white;
+}
+
+.goals-button--cancel {
+  background: #64748b;
+  color: white;
+}
+
+.goal-history-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.goal-history-card__actions strong {
+  white-space: nowrap;
+}
+
+@media (max-width: 500px) {
+  .goal-history-card__actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+/* Add / Edit form actions
+.goal-form__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Edit button */
+/* .goals-button--edit {
+  background: #2563eb;
+  color: #ffffff;
+} */
+
+/* Cancel button */
+/* .goals-button--cancel {
+  background: #64748b;
+  color: #ffffff;
+} */
+
+/* Achievement history actions */
+/* .goal-history-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+} */
+
+/* .goal-history-card__actions strong {
+  white-space: nowrap;
+} */
+
+/* @media (max-width: 500px) {
+  .goal-history-card__actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+} */ 

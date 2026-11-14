@@ -14,6 +14,7 @@ const formatCurrency = (amount) =>
   }).format(Number(amount) || 0);
 
 const GoalsPage = ({ userId }) => {
+  // Financial summary
   const {
     netWorth,
     amountForProcess,
@@ -24,38 +25,42 @@ const GoalsPage = ({ userId }) => {
     isLoading: isLoadingFinancials,
   } = useGoalFinancials(userId);
 
+  // Goals data and operations
   const {
     activeGoals,
     achievedGoals,
     isLoadingGoals,
     goalErrorMessage,
     saveNewGoal,
+    editGoal,
     markGoalAsAchieved,
     removeGoal,
   } = useGoals(userId);
 
+  // Form states
   const [goalName, setGoalName] = useState("");
   const [goalAmount, setGoalAmount] = useState("");
   const [goalNote, setGoalNote] = useState("");
 
+  // Other states
   const [notification, setNotification] = useState("");
-
   const [showHistory, setShowHistory] = useState(false);
+  const [editingGoalId, setEditingGoalId] = useState(null);
 
-  // Sort goals by highest readiness percentage
+  // Sort active goals by highest readiness percentage
   const sortedActiveGoals = useMemo(() => {
     return [...activeGoals].sort((a, b) => {
-      const aReadiness =
-        (goalBudget / Number(a.goalAmount)) * 100;
+      const aAmount = Number(a.goalAmount);
+      const bAmount = Number(b.goalAmount);
 
-      const bReadiness =
-        (goalBudget / Number(b.goalAmount)) * 100;
+      const aReadiness = aAmount > 0 ? goalBudget / aAmount : 0;
+      const bReadiness = bAmount > 0 ? goalBudget / bAmount : 0;
 
       return bReadiness - aReadiness;
     });
   }, [activeGoals, goalBudget]);
 
-  // Calculate readiness percentage
+  // Calculate goal readiness
   const getReadiness = (amount) => {
     const goalPrice = Number(amount);
 
@@ -64,36 +69,88 @@ const GoalsPage = ({ userId }) => {
     return Math.min((goalBudget / goalPrice) * 100, 100);
   };
 
-  // Add a new goal
-  const handleAddGoal = async (event) => {
+  // Reset form
+  const resetGoalForm = () => {
+    setGoalName("");
+    setGoalAmount("");
+    setGoalNote("");
+    setEditingGoalId(null);
+  };
+
+  // Add a new goal or update an existing goal
+  const handleSaveGoal = async (event) => {
     event.preventDefault();
 
-    if (!goalName.trim() || !goalAmount) {
-      setNotification("Please enter the goal name and amount.");
+    setNotification("");
+
+    if (!goalName.trim() || !goalAmount || Number(goalAmount) <= 0) {
+      setNotification("Please enter a valid goal name and amount.");
       return;
     }
 
-    const confirmed = window.confirm(
-      `Are you sure you want to add "${goalName.trim()}" as a goal?`
-    );
+    let isSaved = false;
 
-    if (!confirmed) return;
+    try {
+      if (editingGoalId) {
+        // Update existing active goal
+        isSaved = await editGoal(editingGoalId, {
+          goalName: goalName.trim(),
+          goalAmount: Number(goalAmount),
+          note: goalNote.trim(),
+        });
 
-    const isSaved = await saveNewGoal({
-      goalName,
-      goalAmount,
-      note: goalNote,
-    });
+        if (isSaved) {
+          setNotification("Goal updated successfully.");
+        }
+      } else {
+        // Confirm before adding a new goal
+        const confirmed = window.confirm(
+          `Are you sure you want to add "${goalName.trim()}" as a goal?`
+        );
 
-    if (isSaved) {
-      setGoalName("");
-      setGoalAmount("");
-      setGoalNote("");
-      setNotification("Goal added successfully.");
+        if (!confirmed) return;
+
+        isSaved = await saveNewGoal({
+          goalName: goalName.trim(),
+          goalAmount: Number(goalAmount),
+          note: goalNote.trim(),
+        });
+
+        if (isSaved) {
+          setNotification("Goal added successfully.");
+        }
+      }
+
+      if (isSaved) {
+        resetGoalForm();
+      }
+    } catch (error) {
+      console.error("Goal save error:", error);
+      setNotification("Could not save the goal. Please try again.");
     }
   };
 
-  // Mark a goal as achieved
+  // Start editing an active goal
+  const handleEditGoal = (goal) => {
+    setEditingGoalId(goal.goalId);
+    setGoalName(goal.goalName);
+    setGoalAmount(String(goal.goalAmount));
+    setGoalNote(goal.note || "");
+    setNotification("");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    resetGoalForm();
+    setNotification("");
+  };
+
+  // Mark an active goal as achieved
   const handleAchieveGoal = async (goal) => {
     const confirmed = window.confirm(
       `Have you achieved "${goal.goalName}"? This will move it to your achievement history.`
@@ -101,25 +158,65 @@ const GoalsPage = ({ userId }) => {
 
     if (!confirmed) return;
 
-    const isAchieved = await markGoalAsAchieved(goal.goalId);
+    try {
+      const isAchieved = await markGoalAsAchieved(goal.goalId);
 
-    if (isAchieved) {
-      setNotification(`${goal.goalName} marked as achieved!`);
+      if (isAchieved) {
+        if (editingGoalId === goal.goalId) {
+          resetGoalForm();
+        }
+
+        setNotification(`${goal.goalName} marked as achieved!`);
+      }
+    } catch (error) {
+      console.error("Goal achievement error:", error);
+      setNotification("Could not update the goal. Please try again.");
     }
   };
 
-  // Delete a goal
+  // Delete an active goal
   const handleDeleteGoal = async (goal) => {
     const confirmed = window.confirm(
-      `Are you sure you want to permanently delete "${goal.goalName}"?`
+      `Are you sure you want to permanently delete "${goal.goalName}"? This action cannot be undone.`
     );
 
     if (!confirmed) return;
 
-    const isDeleted = await removeGoal(goal.goalId);
+    try {
+      const isDeleted = await removeGoal(goal.goalId);
 
-    if (isDeleted) {
-      setNotification(`${goal.goalName} deleted successfully.`);
+      if (isDeleted) {
+        if (editingGoalId === goal.goalId) {
+          resetGoalForm();
+        }
+
+        setNotification(`${goal.goalName} deleted successfully.`);
+      }
+    } catch (error) {
+      console.error("Active goal deletion error:", error);
+      setNotification("Could not delete the goal. Please try again.");
+    }
+  };
+
+  // Delete an achieved goal from achievement history
+  const handleDeleteAchievedGoal = async (goal) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to permanently delete "${goal.goalName}" from your achievement history? This action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const isDeleted = await removeGoal(goal.goalId);
+
+      if (isDeleted) {
+        setNotification(
+          `${goal.goalName} removed from achievement history.`
+        );
+      }
+    } catch (error) {
+      console.error("Achieved goal deletion error:", error);
+      setNotification("Could not delete the achieved goal. Please try again.");
     }
   };
 
@@ -127,6 +224,7 @@ const GoalsPage = ({ userId }) => {
 
   return (
     <div className="goals-page">
+      {/* Page header */}
       <div className="goals-page__header">
         <div>
           <h1>My Goals</h1>
@@ -134,6 +232,7 @@ const GoalsPage = ({ userId }) => {
         </div>
       </div>
 
+      {/* Notification */}
       {notification && (
         <div className="goals-notification">
           <span>{notification}</span>
@@ -147,6 +246,7 @@ const GoalsPage = ({ userId }) => {
         </div>
       )}
 
+      {/* Error */}
       {goalErrorMessage && (
         <div className="goals-error">
           {goalErrorMessage}
@@ -154,7 +254,9 @@ const GoalsPage = ({ userId }) => {
       )}
 
       {isLoading ? (
-        <p className="goals-loading">Loading your financial data...</p>
+        <p className="goals-loading">
+          Loading your financial data...
+        </p>
       ) : (
         <>
           {/* Financial summary */}
@@ -193,13 +295,20 @@ const GoalsPage = ({ userId }) => {
             </div>
           </section>
 
-          {/* Add goal form */}
+          {/* Add / Edit goal form */}
           <section className="goals-form-section">
-            <h2>Add a New Goal</h2>
+            <h2>
+              {editingGoalId ? "Edit Goal" : "Add a New Goal"}
+            </h2>
 
-            <form onSubmit={handleAddGoal} className="goals-form">
+            <form
+              onSubmit={handleSaveGoal}
+              className="goals-form"
+            >
               <div className="goals-form__field">
-                <label htmlFor="goalName">Goal Name</label>
+                <label htmlFor="goalName">
+                  Goal Name
+                </label>
 
                 <input
                   id="goalName"
@@ -207,11 +316,14 @@ const GoalsPage = ({ userId }) => {
                   value={goalName}
                   onChange={(event) => setGoalName(event.target.value)}
                   placeholder="Example: White Sofa"
+                  required
                 />
               </div>
 
               <div className="goals-form__field">
-                <label htmlFor="goalAmount">Goal Amount (₹)</label>
+                <label htmlFor="goalAmount">
+                  Goal Amount (₹)
+                </label>
 
                 <input
                   id="goalAmount"
@@ -221,11 +333,14 @@ const GoalsPage = ({ userId }) => {
                   value={goalAmount}
                   onChange={(event) => setGoalAmount(event.target.value)}
                   placeholder="Example: 25000"
+                  required
                 />
               </div>
 
               <div className="goals-form__field">
-                <label htmlFor="goalNote">Note / Link (Optional)</label>
+                <label htmlFor="goalNote">
+                  Note / Link (Optional)
+                </label>
 
                 <input
                   id="goalNote"
@@ -236,9 +351,24 @@ const GoalsPage = ({ userId }) => {
                 />
               </div>
 
-              <button type="submit" className="goals-button">
-                Add Goal
-              </button>
+              <div className="goal-form__actions">
+                <button
+                  type="submit"
+                  className="goals-button"
+                >
+                  {editingGoalId ? "Update Goal" : "Add Goal"}
+                </button>
+
+                {editingGoalId && (
+                  <button
+                    type="button"
+                    className="goals-button goals-button--cancel"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
             </form>
           </section>
 
@@ -313,10 +443,18 @@ const GoalsPage = ({ userId }) => {
                       <div className="goal-card__actions">
                         <button
                           type="button"
+                          className="goals-button goals-button--edit"
+                          onClick={() => handleEditGoal(goal)}
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
                           className="goals-button goals-button--achieve"
                           onClick={() => handleAchieveGoal(goal)}
                         >
-                          Achieve
+                          Achieved
                         </button>
 
                         <button
@@ -371,9 +509,19 @@ const GoalsPage = ({ userId }) => {
                         </small>
                       </div>
 
-                      <strong>
-                        {formatCurrency(goal.goalAmount)}
-                      </strong>
+                      <div className="goal-history-card__actions">
+                        <strong>
+                          {formatCurrency(goal.goalAmount)}
+                        </strong>
+
+                        <button
+                          type="button"
+                          className="goals-button goals-button--delete"
+                          onClick={() => handleDeleteAchievedGoal(goal)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </article>
                   ))
                 )}
