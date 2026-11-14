@@ -22,4 +22,4 @@ const analytics = getAnalytics(app);
 
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
+}check
