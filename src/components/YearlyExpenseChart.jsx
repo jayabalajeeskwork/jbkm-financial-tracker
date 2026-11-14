@@ -134,10 +134,12 @@ export default function YearlyExpenseChart({ userId }) {
   </div>
 
 {/* Category List Dropdown */}
+{/* Category List Dropdown */}
 {categoryExpenseSummary.length > 0 ? (
   <details className="expense-category-summary__dropdown">
     <summary className="expense-category-summary__dropdown-header">
       <span>View All Categories</span>
+
       <span className="expense-category-summary__dropdown-count">
         {categoryExpenseSummary.length} Categories
       </span>
@@ -149,7 +151,13 @@ export default function YearlyExpenseChart({ userId }) {
           className="expense-category-summary__list-item"
           key={category.categoryName.toLowerCase()}
         >
-          <span>{category.categoryName}</span>
+          <div>
+            <strong>{category.categoryName}</strong>
+
+            <small>
+              Average: {formatMoneyAmount(category.averagePerEntry)}
+            </small>
+          </div>
 
           <strong>
             {category.totalEntries}{" "}

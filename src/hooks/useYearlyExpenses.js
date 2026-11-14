@@ -91,36 +91,47 @@ export const useYearlyExpenses = (userId) => {
   const averageMonthlyExpense = totalYearExpense / 12;
 
   // Count entries by category within the displayed date range
-  const categoryExpenseSummary = useMemo(() => {
-    const validMonthKeys = new Set(
-      monthlyExpenses.map((month) => month.monthKey)
-    );
+ const categoryExpenseSummary = useMemo(() => {
+  const validMonthKeys = new Set(
+    monthlyExpenses.map((month) => month.monthKey)
+  );
 
-    const categoryGroups = {};
+  const categoryGroups = {};
 
-    allExpenseEntries.forEach((expense) => {
-      const monthKey =
-        expense.monthKey || expense.expenseDate?.slice(0, 7);
+  allExpenseEntries.forEach((expense) => {
+    const monthKey =
+      expense.monthKey || expense.expenseDate?.slice(0, 7);
 
-      if (!validMonthKeys.has(monthKey)) return;
+    if (!validMonthKeys.has(monthKey)) return;
 
-      const categoryName = expense.categoryName?.trim() || "Other";
-      const categoryKey = categoryName.toLowerCase();
+    const categoryName = expense.categoryName?.trim() || "Other";
+    const categoryKey = categoryName.toLowerCase();
 
-      if (!categoryGroups[categoryKey]) {
-        categoryGroups[categoryKey] = {
-          categoryName,
-          totalEntries: 0,
-        };
-      }
+    if (!categoryGroups[categoryKey]) {
+      categoryGroups[categoryKey] = {
+        categoryName,
+        totalEntries: 0,
+        totalAmount: 0,
+        averagePerEntry: 0,
+      };
+    }
 
-      categoryGroups[categoryKey].totalEntries += 1;
-    });
+    categoryGroups[categoryKey].totalEntries += 1;
 
-    return Object.values(categoryGroups).sort(
-      (a, b) => b.totalEntries - a.totalEntries
-    );
-  }, [allExpenseEntries, monthlyExpenses]);
+    categoryGroups[categoryKey].totalAmount +=
+      Number(expense.amount) || 0;
+  });
+
+  return Object.values(categoryGroups)
+    .map((category) => ({
+      ...category,
+      averagePerEntry:
+        category.totalEntries > 0
+          ? category.totalAmount / category.totalEntries
+          : 0,
+    }))
+    .sort((a, b) => b.totalEntries - a.totalEntries);
+}, [allExpenseEntries, monthlyExpenses]);
 
   return {
     monthlyExpenses,

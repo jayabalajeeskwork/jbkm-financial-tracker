@@ -328,3 +328,14 @@
 .expense-category-summary__list-item:last-child {
   border-bottom: none;
 }
+
+.expense-category-summary__list-item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.expense-category-summary__list-item small {
+  font-size: 12px;
+  color: #64748b;
+}
