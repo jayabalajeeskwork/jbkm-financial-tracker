@@ -180,6 +180,15 @@ export default function LoginPage() {
             requirements and requested modifications.
           </p>
         </section>
+
+        {/* CONTACT */}
+<div className="contact-section">
+  <h3>For More Details & Enquiries</h3>
+  <p>Contact us through email</p>
+  <a href="mailto:work.jayabalajeesk@gmail.com">
+    work.jayabalajeesk@gmail.com
+  </a>
+</div>
       </div>
     </div>
   );

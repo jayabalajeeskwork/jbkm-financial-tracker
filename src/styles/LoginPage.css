@@ -161,3 +161,30 @@
     font-size: 23px;
   }
 }
+
+.contact-section {
+  text-align: center;
+  margin: 40px auto 20px;
+  padding: 25px 15px;
+  border-top: 1px solid #ddd;
+}
+
+.contact-section h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.contact-section p {
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.contact-section a {
+  color: #e87522;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-section a:hover {
+  text-decoration: underline;
+}
