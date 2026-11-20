@@ -84,7 +84,7 @@ export default function StewardshipAddEntryForm({
           <input
             className="stewardship-add-form__input"
             list="stewardship-existing-person-names"
-            placeholder="e.g. Appa"
+            placeholder="e.g. Vijay"
             value={personNameInput}
             onChange={(event) => setPersonNameInput(event.target.value)}
           />

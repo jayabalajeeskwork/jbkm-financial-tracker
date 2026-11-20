@@ -315,7 +315,7 @@ const GoalsPage = ({ userId }) => {
                   type="text"
                   value={goalName}
                   onChange={(event) => setGoalName(event.target.value)}
-                  placeholder="Example: White Sofa"
+                  placeholder="Example: Car"
                   required
                 />
               </div>
