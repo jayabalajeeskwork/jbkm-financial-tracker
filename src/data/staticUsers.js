@@ -3,5 +3,5 @@
 // Every new user automatically gets their own empty data (no setup needed).
 export const staticUserProfilesByEmail = {
   "work.jayabalajeesk@gmail.com": { displayName: "Founder" },
-  "demo@yourmail.com": { displayName: "Demo User" },
+  "jbd301002@gmail.com": { displayName: "Demo User" },
 };
