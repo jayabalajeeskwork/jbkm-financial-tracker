@@ -22,7 +22,6 @@ import GoalsPage from "./pages/GoalsPage";
 import DictionaryPage from "./pages/DictionaryPage";
 import MyDictionaryPage from "./pages/MyDictionaryPage";
 
-
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isCheckingLoginStatus, setIsCheckingLoginStatus] = useState(true);
@@ -111,18 +110,17 @@ export default function App() {
           element={<GoalsPage userId={loggedInUser.userId} />}
         />
 
+        <Route
+          path="/dictionary"
+          element={<DictionaryPage userId={loggedInUser.userId} />}
+        />
+
+        <Route
+          path="/dictionary/all"
+          element={<MyDictionaryPage userId={loggedInUser.userId} />}
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
-
-      <Route
-  path="/dictionary"
-  element={<DictionaryPage userId={loggedInUser.userId} />}
-/>
-
-<Route
-  path="/dictionary/all"
-  element={<MyDictionaryPage userId={loggedInUser.userId} />}
-/>
     </Routes>
   );
 }
