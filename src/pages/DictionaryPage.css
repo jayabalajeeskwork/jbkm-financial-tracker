@@ -1,0 +1,251 @@
+
+.dictionary-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.dictionary-page__header,
+.dictionary-list-section__header,
+.dictionary-word-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dictionary-page__header {
+  margin-bottom: 25px;
+}
+
+.dictionary-page__header h1,
+.dictionary-list-section h2,
+.dictionary-form h2 {
+  margin: 0 0 7px;
+}
+
+.dictionary-page__header p,
+.dictionary-list-section__header p {
+  color: #777;
+  margin: 0;
+}
+
+.dictionary-button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dictionary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dictionary-button--primary {
+  background: #f97316;
+  color: white;
+}
+
+.dictionary-button--secondary {
+  background: #e9eef5;
+  color: #263445;
+}
+
+.dictionary-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 15px;
+  margin-bottom: 22px;
+  padding: 18px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.dictionary-month {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dictionary-month label,
+.dictionary-form__field label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dictionary-month select,
+.dictionary-search-toolbar select,
+.dictionary-search-toolbar input,
+.dictionary-form__field input,
+.dictionary-form__field textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d5dce5;
+  border-radius: 7px;
+  background: white;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.dictionary-month select {
+  min-width: 190px;
+}
+
+.dictionary-month-status {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.dictionary-form {
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.dictionary-form h2 {
+  margin-bottom: 20px;
+}
+
+.dictionary-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 17px;
+}
+
+.dictionary-form__field textarea {
+  resize: vertical;
+}
+
+.dictionary-form__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dictionary-list-section {
+  margin-top: 25px;
+}
+
+.dictionary-list-section__header {
+  margin-bottom: 17px;
+}
+
+.dictionary-search-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dictionary-word-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dictionary-word-card {
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+  background: white;
+}
+
+.dictionary-word-card__header {
+  margin-bottom: 17px;
+}
+
+.dictionary-word-card__header h3 {
+  margin: 0;
+  font-size: 21px;
+  color: #172554;
+}
+
+.dictionary-edit-button {
+  padding: 7px 15px;
+  border: none;
+  border-radius: 6px;
+  background: #e0ecff;
+  color: #1d4ed8;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dictionary-word-card__section {
+  padding-top: 13px;
+  margin-top: 13px;
+  border-top: 1px solid #edf0f4;
+}
+
+.dictionary-word-card__section h4 {
+  margin: 0 0 7px;
+  color: #f97316;
+  font-size: 14px;
+}
+
+.dictionary-word-card__section p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.dictionary-word-month {
+  color: #64748b;
+  font-size: 12px;
+  background: #f1f5f9;
+  padding: 6px 9px;
+  border-radius: 6px;
+}
+
+.dictionary-empty-message {
+  text-align: center;
+  padding: 35px 15px;
+  color: #777;
+  background: #f8fafc;
+  border-radius: 9px;
+}
+
+.dictionary-message {
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.dictionary-message--error {
+  color: #dc2626;
+}
+
+.dictionary-message--success {
+  color: #15803d;
+}
+
+@media (max-width: 650px) {
+  .dictionary-page {
+    padding: 15px;
+  }
+
+  .dictionary-page__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dictionary-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dictionary-search-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .dictionary-word-card {
+    padding: 15px;
+  }
+}

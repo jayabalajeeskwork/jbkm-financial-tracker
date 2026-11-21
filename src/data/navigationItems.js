@@ -43,4 +43,11 @@ export const navigationItems = [
   routePath: "/goals",
   iconSymbol: "🎯",
 },
+
+{
+  navigationItemId: "dictionary",
+  label: "Dictionary",
+  routePath: "/dictionary",
+  iconSymbol: "📖",
+},
 ];
