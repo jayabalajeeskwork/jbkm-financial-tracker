@@ -36,7 +36,12 @@ export const navigationItems = [
   routePath: "/wallet",
   iconSymbol: "👛",
 },
-
+{
+  navigationItemId: "reminders",
+  label: "Reminders",
+  routePath: "/reminders",
+  iconSymbol: "⏰",
+},
   {
   navigationItemId: "goals",
   label: "Goals",
