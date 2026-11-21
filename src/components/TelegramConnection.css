@@ -1,0 +1,29 @@
+
+.telegram-connection {
+  padding: 16px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.telegram-connection button {
+  padding: 10px 16px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.telegram-code {
+  margin-top: 15px;
+  padding: 12px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+.telegram-code strong {
+  display: block;
+  margin: 10px 0;
+  font-size: 18px;
+}

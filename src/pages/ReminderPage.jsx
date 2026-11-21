@@ -1,7 +1,8 @@
-
 import { useState } from "react";
 import useReminders from "../hooks/useReminders";
 import "./ReminderPage.css";
+import NotificationSettings from "../components/NotificationSettings";
+import TelegramConnection from "../components/TelegramConnection";
 
 const reminderCategories = [
   "Banking Exams",
@@ -25,14 +26,11 @@ const emptyForm = {
 const formatDate = (dateString) => {
   if (!dateString) return "-";
 
-  return new Date(`${dateString}T00:00:00`).toLocaleDateString(
-    "en-IN",
-    {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    },
-  );
+  return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 };
 
 const formatMoney = (amount) => {
@@ -198,18 +196,14 @@ export default function ReminderPage({ userId }) {
       >
         <div className="reminder-card-header">
           <div>
-            <span className="reminder-category">
-              {reminder.category}
-            </span>
+            <span className="reminder-category">{reminder.category}</span>
 
             <h3>{reminder.topic}</h3>
           </div>
 
           <span
             className={`deadline-status ${
-              !isExpired && daysRemaining <= 5
-                ? "urgent-status"
-                : ""
+              !isExpired && daysRemaining <= 5 ? "urgent-status" : ""
             }`}
           >
             {getDeadlineLabel(reminder.deadline)}
@@ -289,11 +283,10 @@ export default function ReminderPage({ userId }) {
           <strong>{formatMoney(totalMoneyNeeded)}</strong>
         </div>
       </section>
-
+      <NotificationSettings userId={userId} />
+      <TelegramConnection userId={userId} />
       <section className="reminder-form-section">
-        <h2>
-          {editingReminderId ? "Edit Reminder" : "Add New Reminder"}
-        </h2>
+        <h2>{editingReminderId ? "Edit Reminder" : "Add New Reminder"}</h2>
 
         <form onSubmit={handleSubmit} className="reminder-form">
           <div className="reminder-form-group">
@@ -354,9 +347,7 @@ export default function ReminderPage({ userId }) {
           </div>
 
           <div className="reminder-form-group">
-            <label htmlFor="moneyNeeded">
-              Money Needed (₹)
-            </label>
+            <label htmlFor="moneyNeeded">Money Needed (₹)</label>
             <input
               id="moneyNeeded"
               type="number"
@@ -370,9 +361,7 @@ export default function ReminderPage({ userId }) {
           </div>
 
           {formError && (
-            <p className="reminder-form-error full-width">
-              {formError}
-            </p>
+            <p className="reminder-form-error full-width">{formError}</p>
           )}
 
           <div className="reminder-form-actions full-width">
@@ -401,9 +390,7 @@ export default function ReminderPage({ userId }) {
         </form>
       </section>
 
-      {errorMessage && (
-        <p className="reminder-page-error">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="reminder-page-error">{errorMessage}</p>}
 
       <section className="reminder-list-section">
         <h2>Active Reminders</h2>
@@ -417,9 +404,7 @@ export default function ReminderPage({ userId }) {
           </p>
         ) : (
           <div className="reminder-list">
-            {activeReminders.map((reminder) =>
-              renderReminder(reminder),
-            )}
+            {activeReminders.map((reminder) => renderReminder(reminder))}
           </div>
         )}
       </section>
@@ -427,19 +412,15 @@ export default function ReminderPage({ userId }) {
       <section className="reminder-list-section expired-section">
         <h2>Expired Reminders</h2>
         <p className="section-description">
-          These reminders are kept for reference. Their money is not
-          included in the active total.
+          These reminders are kept for reference. Their money is not included in
+          the active total.
         </p>
 
         {expiredReminders.length === 0 ? (
-          <p className="empty-reminder-message">
-            No expired reminders.
-          </p>
+          <p className="empty-reminder-message">No expired reminders.</p>
         ) : (
           <div className="reminder-list">
-            {expiredReminders.map((reminder) =>
-              renderReminder(reminder, true),
-            )}
+            {expiredReminders.map((reminder) => renderReminder(reminder, true))}
           </div>
         )}
       </section>

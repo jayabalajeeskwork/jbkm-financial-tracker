@@ -1,0 +1,28 @@
+
+.notification-settings {
+  padding: 16px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.notification-settings label {
+  display: block;
+  margin: 12px 0 6px;
+}
+
+.notification-settings input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.notification-settings button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
