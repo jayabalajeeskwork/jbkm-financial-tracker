@@ -7,7 +7,8 @@ import {
 } from "firebase/firestore";
 
 // Use the same Firestore import path as reminderFirestoreService.js
-import { firestoreDatabase } from "./firebase";
+import { firestoreDatabase } from "./firebaseConfiguration";
+
 
 const getNotificationDocument = (userId) => {
   return doc(
